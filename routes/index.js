@@ -9,17 +9,17 @@ router.get('/', function(req, res, next) {
 // Get Book Count page //
 
 router.get('/books', function(req, res, next) {
-  res.render('index', { title: 'Books' });
+  res.render('books', { title: 'Books', bookCount: 7 });
 });
 
 // Get Author Count page //
 router.get('/authors', function(req, res, next) {
-  res.render('index', { title: 'Authors' });
+  res.render('authors', { title: 'Authors', authorCount: 6});
 });
 
 // Get Page Count page //
 router.get('/pages', function(req, res, next) {
-  res.render('index', { title: 'Pages' });
+  res.render('pages', { title: 'Pages', pagesCount: 2368});
 });
 
 module.exports = router;

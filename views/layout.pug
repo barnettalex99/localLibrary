@@ -2,6 +2,22 @@ doctype html
 html
   head
     title= title
+    head
+    title= title
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1')
     link(rel='stylesheet', href='/stylesheets/style.css')
   body
+    div(class='header')
+      h1 Summer Reading Calculator 
+      ul(class='nav')
+        li 
+          a(href='/') Home
+        li 
+          a(href='/books') Book Count 
+        li 
+          a(href='/authors') Author Count 
+        li 
+          a(href='/pages') Page Count 
+
     block content
