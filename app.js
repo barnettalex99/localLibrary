@@ -57,15 +57,36 @@ async function runApp()
   connection = await oracledb.getConnection({ user: "admin", password: "LocalLibrary1", connectionString: "(description= (retry_count=20)(retry_delay=3)(address=(protocol=tcps)(port=1522)(host=adb.us-ashburn-1.oraclecloud.com))(connect_data=(service_name=gd62a8892716de6_librarydb_high.adb.oraclecloud.com))(security=(ssl_server_dn_match=yes)))" });
 // Create a table
   await connection.execute(`begin execute immediate 'drop table book'; exception when others then if sqlcode <> -942 then raise; end if; end;`);
-  await connection.execute(`create table book (title varchar(100), author varchar(100), hasRead varchar(1))`);
+  await connection.execute(`create table book (title varchar(100), author varchar(100), pages int)`);
 // Insert some rows
-const sql = `INSERT INTO book (title, author, hasRead) VALUES ('East of Eden', 'John Steinbeck', 'Y')`;
+var sql = `INSERT INTO book (title, author, pages) VALUES ('East Of Eden', 'John Steinbeck', 704)`;
+await connection.execute(sql);
+sql = `INSERT INTO book (title, author, pages) VALUES ('Of Mice And Men', 'John Steinbeck', 144)`;
+await connection.execute(sql);
+sql = `INSERT INTO book (title, author, pages) VALUES ('Good For A Girl', 'Lauren Fleshman', 288)`;
+await connection.execute(sql);
+sql = `INSERT INTO book (title, author, pages) VALUES ('The Girl With All The Gifts', 'M.R. Carey', 416)`;
+await connection.execute(sql);
+sql = `INSERT INTO book (title, author, pages) VALUES ('Life Ceremony', 'Sayaka Murata', 256)`;
+await connection.execute(sql);
+sql = `INSERT INTO book (title, author, pages) VALUES ('The Cartographers', 'Peng Sheperd', 400)`;
+await connection.execute(sql);
+sql = `INSERT INTO book (title, author, pages) VALUES ('The Four Agreements', 'Don Miguel Ruiz', 160)`;
 await connection.execute(sql);
 // connection.commit(); // uncomment to make data persistent
 
-// Now query the rows back
-const result = await connection.execute(`SELECT * FROM book`);
-console.dir(result.rows, { depth: null });
+// Get number of different books
+const bookCount = await connection.execute(`SELECT COUNT(title) FROM book`);
+console.log("BookCount:");
+console.dir(bookCount.rows, { depth: null });
+//get number of different authors
+const authorCount = await connection.execute(`SELECT COUNT(DISTINCT author) FROM book`);
+console.log("AuthorCount:");
+console.dir(authorCount.rows, { depth: null });
+//get number of pages
+const pageCount = await connection.execute(`SELECT SUM(pages) FROM book`);
+console.log("PagesCount:");
+console.dir(pageCount.rows, { depth: null });
 } catch (err) {
 console.error(err);
 } finally {
